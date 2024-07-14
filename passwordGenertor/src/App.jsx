@@ -8,21 +8,35 @@ function App() {
   const [characterAllowed,setChar]=useState(false)
   const [password,setPassword]=useState("")
 
+  const passwordref=useRef(null)
+
   const passwordGenerator=useCallback(()=>{
     let pass=""
     let str="asdfghjklpoiuytrewqzxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM"
-    if(numberAllowed) str+="0123456789"
-    if(characterAllowed) str+="#$&*"
+    if(numberAllowed) str +="0123456789"
+    if(characterAllowed) str +="#$&*"
 
     for(let i=1;i<=length;i++){
       let char=Math.floor(Math.random()*str.length+1)
-      pass=str.charAt(char)
+      pass +=str.charAt(char)
     }
     setPassword(pass)
-  },[length,numberAllowed,characterAllowed,setPassword])
+  },[length, numberAllowed, characterAllowed, setPassword])
+
+  const copypasswordtoClick=useCallback(()=>{
+    passwordref.current?.select()
+    passwordref.current?.setSelectionRange(0,3)
+    window.navigator.clipboard.writeText(password)
+  },[])
+
+  useEffect(() => {
+    passwordGenerator()
+  }, [length, numberAllowed, characterAllowed, passwordGenerator])
+
+
   return (
     <>
-      <div className="w-full max-w-md mx-auto shadow-md rounded-lg bg-gray-600 px-4 py-3 my-8 text-white font-bold">
+      <div className="w-full max-w-md mx-auto shadow-md rounded-lg bg-gray-600 px-4 py-3 my-8 text-blue-400 font-bold">
         <h1 className="text-white text-center my-3 text-2xl">Password Generator</h1>
         <div className="flex shadow rounded-lg overflow-hidden mb-4">
           <input 
@@ -31,8 +45,9 @@ function App() {
             className="outline-none w-full px-3 py-1"
             placeholder='password'
             readOnly
+            ref={passwordref}
           />
-          <button className="outline-none text-white bg-blue-500  text-xl px-3 py-0.5 shrink-0">copy</button>
+          <button onClick={copypasswordtoClick} className="outline-none text-white bg-blue-500  text-xl px-3 py-0.5 shrink-0">copy</button>
         </div>
         <div className="flex text-sm gap-x-2">
           <div className="flex items-center gap-x-1">
@@ -52,21 +67,22 @@ function App() {
               defaultChacked={numberAllowed}
               id='numberInput'
               onChange={()=>{
-                setNumber((prev)!=prev)
+                setNumber((prev) =>!prev)
               }}
             />
-            <label>number</label>
+            <label htmlFor="numberInput">number</label>
 
           </div>
           <div className="flex items-center gap-x-1">
             <input 
               type="checkbox"
-              defaultChecked={setChar}
+              defaultChecked={characterAllowed}
+              id='charactorInput'
               onChange={()=>{
-                setChar((prev)!=prev)
+                setChar((prev) => !prev)
               }}
             />
-            <label>Charactor</label>
+            <label htmlFor="charactorInput">charactor</label>
           </div>
         </div>
       </div>
