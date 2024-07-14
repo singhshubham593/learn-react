@@ -1,14 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState , useEffect , useCallback , useRef} from 'react'
+ 
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [length, setLength] = useState(8)
+  const [numberAllowed,setNumber]= useState(false)
+  const [characterAllowed,setChar]=useState(false)
+  const [password,setPassword]=useState("")
 
   return (
     <>
-     
+     <h1 className="text-white text-xl ">Password Generator</h1>
     </>
   )
 }
