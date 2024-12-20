@@ -17,7 +17,8 @@ function Github() {
     */
 
     return (
-       <div className='bg-gray-500 text-white text-2xl p-4'>Github Follower: {data.followers}
+       <div className='bg-gray-500 text-white text-2xl p-4'>
+            Github Follower: {data.followers}
        </div> 
     )
 }
